@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    {% block styles %}{% endblock %}
+</head>
+<body>
+    <div class="nav-header">
+        <div class="box" style="text-align:center;font-display:auto;font-size:25px;color=#0000000">
+            <font color="#ffffff">变电站异常检测</font>
+        </div>
+    </div>
+    <div class="nk-sidebar">
+        <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
+            <div class="nk-nav-scroll active" style="overflow: hidden; width: auto; height: 100%;">
+                <ul class="metismenu in" id="menu">
+                    <li class="nav-label">DashBoard</li>
+                    <li class="nav-label">Detect</li>
+                    <li>
+                        <a href="{{ url_for('detect_image') }}">
+                            <span style="margin-left:15px;">DetectImage</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('detect_video') }}">
+                            <span style="margin-left:15px;">DetectVideo</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('logs') }}">
+                            <span style="margin-left:15px;">DetectLogs</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='plugins/common/common.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/custom.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/settings.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/gleek.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/styleSwitcher.js') }}"></script>
+    <div class="content-body" style="min-height: 876px;">
+        <div class="container-fluid mt-3">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+    {% block scripts %}{% endblock %}
+</body>
+</html>
+

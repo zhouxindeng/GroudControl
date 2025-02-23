@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NUAA UAV Ground Control Station</title>
+    <!-- 引入 Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+        }
+        .navbar {
+            background-color: #004085;
+            color: white;
+        }
+        .navbar-brand {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            text-align: center;
+            width: 100%;
+        }
+        .table-header {
+            background-color: #343a40;
+            color: white;
+        }
+        .photo-card img {
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand  text-white mx-auto" href="#">NUAA UAV Ground Control Station</a>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <!-- 无人机飞行状态 -->
+        <div class="card mb-4">
+            <div class="card-header text-white bg-primary">
+                Drone Flight Status
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr class="table-header">
+                            <th>Time</th>
+                            <th>Longitude</th>
+                            <th>Latitude</th>
+                            <th>Altitude</th>
+                            <th>Velocity (X, Y, Z)</th>
+                            <th>Pitch</th>
+                            <th>Roll</th>
+                            <th>Yaw</th>
+                        </tr>
+                    </thead>
+                    <tbody id="droneStatusTable"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 拍摄照片 -->
+        <div class="card">
+            <div class="card-header text-white bg-primary">
+                Captured Photos
+            </div>
+            <div class="card-body">
+                <div id="photoGallery" class="row g-3"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入 Bootstrap JS 和 jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // 获取无人机飞行状态数据
+        function loadDroneStatus() {
+            $.ajax({
+                url: '/getDroneAttitude',
+                method: 'GET',
+                success: function (response) {
+                    if (response.status === "success") {
+                        const tableBody = $("#droneStatusTable");
+                        tableBody.empty();
+                        response.data.forEach(row => {
+                            // 格式化时间为 YYYY-MM-DDTHH:MM:SS
+                            const formattedTime = new Date(row.time).toISOString().slice(0, 19).replace('T', ' ');
+                            
+                            // 经纬度保留8位小数
+                            const longitude = parseFloat(row.longitude).toFixed(8);
+                            const latitude = parseFloat(row.latitude).toFixed(8);
+
+                            tableBody.append(`
+                                <tr>
+                                    <td>${formattedTime}</td>
+                                    <td>${longitude}</td>
+                                    <td>${latitude}</td>
+                                    <td>${row.altitude}</td>
+                                    <td>(${row.velocityX}, ${row.velocityY}, ${row.velocityZ})</td>
+                                    <td>${row.pitch}</td>
+                                    <td>${row.roll}</td>
+                                    <td>${row.yaw}</td>
+                                </tr>
+                            `);
+                        });
+                    } else {
+                        alert("Error loading drone status: " + response.message);
+                    }
+                },
+                error: function () {
+                    alert("Failed to fetch drone status data.");
+                }
+            });
+        }
+
+        // 获取拍摄照片数据
+        function loadPhotos() {
+            $.ajax({
+                url: '/getPhotos',
+                method: 'GET',
+                success: function (response) {
+                    if (response.status === "success") {
+                        const gallery = $("#photoGallery");
+                        gallery.empty();
+                        response.data.forEach(photo => {
+                            gallery.append(`
+                                <div class="col-md-3">
+                                    <div class="photo-card card shadow-sm">
+                                        <img src="${photo.image}" class="card-img-top" alt="${photo.photoName}">
+                                        <div class="card-body">
+                                            <h6 class="card-title">${photo.photoName}</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            `);
+                        });
+                    } else {
+                        alert("Error loading photos: " + response.message);
+                    }
+                },
+                error: function () {
+                    alert("Failed to fetch photo data.");
+                }
+            });
+        }
+
+        // 页面加载时获取数据
+        $(document).ready(function () {
+            loadDroneStatus();
+            loadPhotos();
+        });
+    </script>
+</body>
+</html>

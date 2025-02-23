@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Substation Detection - Image Detection{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-3">
+    <div class="row">
+        <div class="col-lg-4 col-sm-6 mb-4">
+            <a href="{{ url_for('detect_image') }}">
+                <div class="card gradient-1" style="width:100%;height:182.75px">
+                    <div class="card-body">
+                        <div class="d-inline-block" style="margin-top:10px">
+                            <h2 class="text-white">Detect<br />Image</h2>
+                        </div>
+                        <span class="float-right display-5 opacity-5" style="margin-top:60px"><i class="fa fa-image"></i></span>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-lg-4 col-sm-6 mb-4">
+            <a href="{{ url_for('detect_video') }}">
+                <div class="card gradient-2" style="width:100%;height:182.75px">
+                    <div class="card-body">
+                        <div class="d-inline-block" style="margin-top:10px">
+                            <h2 class="text-white">Detect<br />Video</h2>
+                        </div>
+                        <span class="float-right display-5 opacity-5" style="margin-top:60px"><i class="fa fa-video"></i></span>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-lg-4 col-sm-6 mb-4">
+            <a href="{{ url_for('logs') }}">
+                <div class="card gradient-3" style="width:100%;height:182.75px">
+                    <div class="card-body">
+                        <div class="d-inline-block" style="margin-top:10px">
+                            <h2 class="text-white">Detect<br />Logs</h2>
+                        </div>
+                        <span class="float-right display-5 opacity-5" style="margin-top:60px"><i class="fa fa-video"></i></span>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-lg-4 col-sm-6 mb-4">
+            <div class="card gradient-4" style="width:100%;height:182.75px">
+                <div class="card-body">
+                    <div class="d-inline-block" style="margin-top:10px">
+                        <h2 class="text-white">More</h2>
+                    </div>
+                    <span class="float-right display-5 opacity-5" style="margin-top:60px"><i class="fa fa-ellipsis-h"></i></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
